@@ -1,52 +1,90 @@
 <?php
-class Personne
+interface statusCafetiere
 {
-  public string $nom;
-  private int $age;
-  protected string $addresse;
-  private int $retraite = 60;
+}
+class cafetiere implements statusCafetiere
+{
+  protected int $reservoirDeau = 10;
+  protected int $reservoircafe = 2;
 
-  public function __construct(string $nom, int $age, string $addresse, int $retraite){
-    $this->nom = $nom;
-    $this->age = $age; 
-    $this->addresse = $addresse;  
-    $this->retraite = $retraite; 
+
+  public function allumer()
+  {
+    $quantiteDeau = 5;
+    $quantiteCafe = 1;
+    if ($this->reservoirDeau >= $quantiteDeau && $this->reservoircafe >= $quantiteCafe) {
+      echo "<br> Eau: " . $this->reservoirDeau . " ml <br> cafe moulu: " . $this->reservoircafe;
+      $resultReservoirDeau = $this->reservoirDeau - $quantiteDeau;
+      $resultReservoirCafe = $this->reservoircafe - $quantiteCafe;
+      $this->reservoirDeau = $resultReservoirDeau;
+      $this->reservoircafe = $resultReservoirCafe;
+      echo "<br>le café est près";
+      echo "<br> Reste Eau: " . $resultReservoirDeau . " <br> reste café moulu: " . $resultReservoirCafe;
+    } else {
+      echo " <br> ingredient insuffisant -----------> veuillez remplir";
+    }
+
   }
+  public function eteindre()
+  {
+    echo "votre cafetiere est eteinte";
+  }
+  public function remplir(int $valEau, int $valCafe)
+  {
+    $maxEau = 10;
+    $maxCafe = 2;
 
-   public function getNom(): string{
-        return $this->nom;
-    }
+    $resteEau = $this->reservoirDeau;
+    $resteCafe = $this->reservoircafe;
 
-    public function setNom(string $newNom){
-      $this->nom = $newNom;
-      return $this;
+    $resultResteEau = $resteEau + $valEau;
+    $resultResteCafe = $resteCafe + $valCafe;
+
+    if($resultResteEau<=$maxEau && $resultResteCafe<=$maxCafe){
+      $this->reservoirDeau = $resultResteEau; 
+      $this->reservoircafe = $resultResteCafe ;
+        echo " <br> Eau:".$this->reservoirDeau."<br> Cafe:".$this->reservoircafe;
     }
-    public function getAge(): int{
-        return $this->age;
-    }
-    public function setAge(int $newAge){
-      self :: verificationAge($newAge);
-      $this->age = $newAge;
-      return $this;
-    }
-    public function getAnneeServiceRestante(int $age){
-      return $this->retraite - $this->age;
-    }
-    public function verificationAge($age):bool{
-      if ($age>18){
-        return true;
-      }
-      else{
-        echo "age diso";
-        return false;
+    else{
+      echo "<br> votre reservoir est plein";
         
-      }
     }
+
+    
+    
+  }
+  
 }
 
-$pers = new Personne('mahery',25,'test',50);
-$serviceRestante = $pers->getAnneeServiceRestante($pers->getAge());
-echo $serviceRestante;
+$cafe = new cafetiere();
+$cafe->allumer();
+$cafe->allumer();
+$cafe->allumer();
+$cafe->remplir(10,0);
+$cafe->allumer();
+
+
+
+
+ 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
